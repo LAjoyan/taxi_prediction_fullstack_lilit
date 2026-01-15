@@ -22,3 +22,24 @@ This project uses `uv` for Python package management.
     git clone <your-repo-url>
     cd TAXI_PREDICTION_FULLSTACK_LILIT
     ```
+
+
+## Data Loading
+- Loaded the taxi trip dataset (`taxi_trip_pricing.csv`) into a DataFrame.
+
+## Initial Exploration
+- Checked dataset info and missing values.
+- Dropped `Passenger_Count` column as it does not significantly affect `Trip_Price`.
+
+## Handling Missing Values
+- Dropped rows with missing critical values for ML (`Trip_Distance_km`, `Base_Fare`, `Per_Km_Rate`, `Per_Minute_Rate`, `Trip_Duration_Minutes`) where they could not be reliably calculated.
+- Calculated missing values where possible:
+  - `Trip_Distance_km` from `Trip_Price`, `Base_Fare`, `Per_Km_Rate`, `Per_Minute_Rate`, `Trip_Duration_Minutes`
+  - `Base_Fare` from `Trip_Price`, `Trip_Distance_km`, `Per_Km_Rate`, `Trip_Duration_Minutes`, `Per_Minute_Rate`
+  - `Per_Km_Rate` from `Trip_Price`, `Base_Fare`, `Trip_Distance_km`, `Per_Minute_Rate`, `Trip_Duration_Minutes`
+  - `Per_Minute_Rate` from `Trip_Price`, `Base_Fare`, `Trip_Distance_km`, `Per_Km_Rate`, `Trip_Duration_Minutes`
+- Removed rows that still had missing values after calculation.
+
+## Resulting Dataset
+- Final cleaned dataset has 974 entries and no missing values for essential features.
+- Ready for further EDA and visualization.
