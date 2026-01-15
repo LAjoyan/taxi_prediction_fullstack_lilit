@@ -43,3 +43,10 @@ This project uses `uv` for Python package management.
 ## Resulting Dataset
 - Final cleaned dataset has 974 entries and no missing values for essential features.
 - Ready for further EDA and visualization.
+
+## Target Transformation
+
+- The `Trip_Price` distribution is heavily right-skewed due to a few very high-priced trips.
+- Applied a log-transform (`log1p`) to create a new column `Trip_Price_log`.
+- This reduces skew and makes the data more suitable for regression models.
+
