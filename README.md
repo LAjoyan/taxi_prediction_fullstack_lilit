@@ -54,3 +54,10 @@ This project uses `uv` for Python package management.
 
 - Categorical features (`Time_of_Day`, `Day_of_Week`, `Traffic_Conditions`, `Weather`) were converted into numeric columns using **one-hot encoding**.
 - The resulting boolean columns (`True`/`False`) were converted to `float` so all features are numeric and ready for machine learning models.
+
+## Exporting Cleaned Data
+
+- After preprocessing, the datasets were saved as CSV files for modeling:  
+  - **Training data** (features + log-transformed target): `df_train.csv`  
+  - **Prediction data** (features only, Trip_Price unknown): `df_predict.csv`  
+- Both datasets are fully numeric, with no missing values, and ready for machine learning.
