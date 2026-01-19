@@ -164,6 +164,25 @@ lower error metrics and a higher R² score.
 
 Therefore, Random Forest was selected as the final model.
 
+The selected Random Forest model was retrained on the full dataset before export.
+
+
+### Model Export
+
+After final model selection, the Random Forest model was retrained on the full
+dataset to maximize learning from all available data.
+
+The trained model was then exported using `joblib` to enable reuse during
+deployment and inference:
+
+- **Model file:** `random_forest_model.joblib`
+- **Location:** `src/taxipred/model_development/`
+
+This file is later loaded by the backend service to serve price predictions
+without retraining the model.
+
+---
+
 ## 🌐 Application
 - **Backend:** FastAPI serving predictions
 - **Frontend:** Streamlit interface for user inputs and price prediction display
