@@ -1,3 +1,18 @@
+src/taxipred/
+├── backend/
+│   ├── api.py
+│   └── data_processing.py
+├── data/
+├── frontend/
+│   └── app.py
+├── model_development/
+│   ├── eda.ipynb
+│   └── model_dev.ipynb
+├── utils/
+│   ├── constants.py
+│   └── __init__.py
+
+
 # 🚕 Taxi Trip Prediction System
 
 A full-stack machine learning application for predicting taxi trip prices based on trip
@@ -9,7 +24,7 @@ distance, duration, traffic conditions, time of day, day of week, and weather.
 This project focuses on building a robust price prediction system using real-world–style
 taxi trip data.  
 The pipeline includes data cleaning, mathematical imputation, feature engineering,
-outlier handling, model training, and deployment via a web interface.
+outlier handling, model training, and deployment through a decoupled backend and frontend.
 
 ---
 
@@ -89,10 +104,15 @@ Before finalizing the data for training, a rigorous statistical audit was perfor
 - Schema Alignment: Ensured that df_predict.csv contains the exact same 14-feature statistical baseline as the training set.
 
 ---
-## 🤖 Model
-- **Model:** Linear Regression
-- **Target:** Log-transformed Trip_Price
-- Designed for interpretability and robustness
+## 🤖 Model Development
+
+Multiple regression models are evaluated during the model development phase, including
+linear and tree-based approaches. Model selection is based on cross-validation
+performance, error metrics (MAE, RMSE), and interpretability.
+
+The final selected model is trained using a log-transformed version of `Trip_Price`
+to improve numerical stability and reduce skewness.
+
 
 ---
 
