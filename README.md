@@ -147,7 +147,22 @@ Feature scaling was evaluated but not applied in the final pipeline.
 The selected models (Linear Regression as a reference model and Random Forest
 as a non-linear model) do not require feature scaling to perform correctly.
 
+### Random Forest Regressor
 
+Random Forest was evaluated to capture non-linear pricing effects and feature
+interactions that linear models cannot represent. As a tree-based model, Random
+Forest does not require feature scaling.
+
+Compared to Linear Regression, Random Forest achieved lower error metrics and a
+higher R² score, indicating improved predictive performance.
+
+### Final Model Selection
+
+Linear Regression was used as a reference model due to its simplicity and
+interpretability. Random Forest achieved the best overall performance with
+lower error metrics and a higher R² score.
+
+Therefore, Random Forest was selected as the final model.
 
 ## 🌐 Application
 - **Backend:** FastAPI serving predictions
