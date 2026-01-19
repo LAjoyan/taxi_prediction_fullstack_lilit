@@ -118,6 +118,37 @@ to improve numerical stability and reduce skewness.
 
 ---
 
+## 🤖 Model Development & Evaluation
+
+Model development followed a structured machine learning workflow to ensure
+robust and interpretable results.
+
+### Baseline Model
+A simple baseline model was established using the median of the target variable.
+This model serves as a reference point to ensure that any trained machine learning
+model provides meaningful improvement over naive predictions.
+
+### Linear Regression
+Linear Regression was used as the first machine learning model due to its
+simplicity and interpretability. The model was trained on the cleaned and
+feature-engineered dataset and evaluated on a held-out test set.
+
+Model performance was assessed using:
+- Mean Absolute Error (MAE)
+- Root Mean Squared Error (RMSE)
+- R² score
+
+The Linear Regression model significantly outperformed the baseline, achieving
+a positive R² score and substantially lower error metrics, indicating that the
+engineered features capture meaningful pricing patterns.
+
+### Feature Scaling
+Feature scaling was evaluated but not applied in the final pipeline.
+The selected models (Linear Regression as a reference model and Random Forest
+as a non-linear model) do not require feature scaling to perform correctly.
+
+
+
 ## 🌐 Application
 - **Backend:** FastAPI serving predictions
 - **Frontend:** Streamlit interface for user inputs and price prediction display
