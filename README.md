@@ -1,3 +1,4 @@
+```text
 src/taxipred/
 ├── backend/                  # FastAPI backend and API layer
 │   ├── api.py                # API endpoints for predictions and data access
@@ -11,7 +12,7 @@ src/taxipred/
 ├── utils/                    # Shared utilities and constants
 │   ├── constants.py          # Global constants and configuration values
 │   └── __init__.py           # Marks utils as a Python package
-
+```
 
 
 # 🚕 Taxi Trip Prediction System
