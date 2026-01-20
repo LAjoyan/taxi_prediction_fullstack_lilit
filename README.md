@@ -1,18 +1,36 @@
 ```text
-src/taxipred/
-├── backend/                  # FastAPI backend and API layer
-│   ├── api.py                # API endpoints for predictions and data access
-│   ├── data_processing.py    # Input validation and preprocessing logic
-│   └── random_forest_model.joblib  # Production model
-├── data/                     # Raw data, processed datasets, and EDA artifacts
-├── frontend/                 # Streamlit frontend application
-│   └── app.py                # User interface for price prediction
-├── model_development/        # Jupyter notebooks for ML workflow
-│   ├── eda.ipynb             # Exploratory Data Analysis and data cleaning
-│   └── model_dev.ipynb       # Model training, evaluation, and selection
-└── utils/                    # Shared utilities and constants
-    ├── constants.py          # Global constants and configuration values
-    └── __init__.py           # Marks utils as a Python package
+taxi_prediction_fullstack_lilit/
+├── .venv/
+├── src/
+│   └── taxipred/
+│       ├── backend/
+│       │   ├── api.py
+│       │   ├── data_processing.py
+│       │   └── random_forest_model.joblib
+│       ├── data/
+│       │   ├── screenshots/
+│       │   │   ├── correlation_heatmap_encoded.png
+│       │   │   ├── eda_cleaned_price_distance.png
+│       │   │   ├── eda_outliers.png
+│       │   │   ├── streamlit_prediction.png
+│       │   │   └── streamlit_ui.png
+│       │   ├── df_predict.csv
+│       │   ├── df_train.csv
+│       │   └── taxi_trip_pricing.csv
+│       ├── frontend/
+│       │   └── app.py
+│       ├── model_development/
+│       │   ├── eda.ipynb
+│       │   └── model_dev.ipynb
+│       └── utils/
+│           ├── __init__.py
+│           └── constants.py
+├── .gitignore
+├── .python-version
+├── pyproject.toml
+├── README.md
+└── uv.lock
+
 
 ```
 
@@ -56,10 +74,9 @@ outlier handling, model training, and deployment through a decoupled backend and
 
 Missing numerical values were recovered using the pricing equation:
 
-\*\*Trip_Price = Base_Fare
-
-- (Trip_Distance_km × Per_Km_Rate)
-- (Trip_Duration_Minutes × Per_Minute_Rate)\*\*
+**Trip_Price = Base_Fare  
++ (Trip_Distance_km × Per_Km_Rate)  
++ (Trip_Duration_Minutes × Per_Minute_Rate)**
 
 This approach minimized data loss while maintaining numerical accuracy.
 
@@ -119,6 +136,20 @@ Before finalizing the data for training, a rigorous statistical audit was perfor
 - Schema Alignment: Ensured that df_predict.csv contains the exact same 14-feature statistical baseline as the training set.
 
 ---
+
+#### Outlier Identification & Removal
+This comparison shows how we eliminated noise by capping distances at 50km and prices at $150.
+
+Below are key EDA plots used to justify cleaning and feature engineering.
+
+![Outliers Before](src/taxipred/data/screenshots/eda_outliers.png)
+![Cleaned Data](src/taxipred/data/screenshots/eda_cleaned_price_distance.png)
+
+#### Feature Relationships
+The heatmap below validates our feature selection and highlights the strong correlation between distance and price.
+![Correlation Heatmap](src/taxipred/data/screenshots/correlation_heatmap_encoded.png)
+---
+
 
 ## 🤖 Model Development
 
@@ -201,8 +232,19 @@ without retraining the model.
 
 ## 🌐 Application
 
-- **Backend:** FastAPI serving predictions
-- **Frontend:** Streamlit interface for user inputs and price prediction display
+## 🧰 Tech stack
+- Python, FastAPI (backend API)
+- Streamlit (frontend UI)
+- scikit-learn + joblib (model + export)
+- pandas + numpy (data processing)
+
+
+## ▶ Run the full app (recommended)
+
+1) Start backend (FastAPI)
+2) Start frontend (Streamlit)
+
+The Streamlit UI will call the FastAPI API for predictions.
 
 ## ▶ Run the Backend (FastAPI)
 
@@ -211,10 +253,14 @@ From the project root:
 ```bash
 uv run uvicorn taxipred.backend.api:app --reload
 ```
-
-Open Swagger UI:
-
+Open Swagger UI: 
 http://127.0.0.1:8000/docs 
+
+### API Endpoints
+- `GET /api/taxi/v1/health` – backend status
+- `GET /api/taxi/v1/data/sample` – sample rows from training data
+- `POST /api/taxi/v1/predict` – price prediction
+
 
 ## ▶ Run the Frontend (Streamlit)
 
@@ -225,14 +271,36 @@ uv run streamlit run src/taxipred/frontend/app.py
 ```
 Open the app in your browser:
 
-http://localhost:8501
-
+- Streamlit UI: http://localhost:8501
 
 **Note:** The Streamlit app calls the FastAPI endpoint:
 `POST /api/taxi/v1/predict`
 
+---
 
+## 🧱 Architecture (High-level)
 
+**Streamlit (Frontend)** collects user trip inputs and sends them to the backend.
+
+**FastAPI (Backend)**:
+- validates the input (Pydantic)
+- transforms input into the exact model feature format (`data_processing.py`)
+- loads the trained Random Forest model (`random_forest_model.joblib`)
+- returns the predicted trip price
+
+Flow:
+**Streamlit → FastAPI `/api/taxi/v1/predict` → RandomForest model → Predicted price**
+
+---
+
+## 🖥️ Frontend (Streamlit)
+
+### Streamlit UI
+![Streamlit UI](src/taxipred/data/screenshots/streamlit_ui.png)
+
+### Example prediction result
+
+![Streamlit Prediction](src/taxipred/data/screenshots/streamlit_prediction.png)
 
 ---
 
@@ -248,21 +316,9 @@ http://localhost:8501
 
 ---
 
-## 📎 Notes
-Detailed implementation steps, experiments, and visualizations
-are documented in the `model_development` notebooks.
+## 🧠 Reflections / What I learned
 
-### 📊 Exploratory Data Analysis Visuals
-
-To justify our cleaning and feature engineering decisions, we analyzed the relationships and distributions within the dataset:
-
-#### Outlier Identification & Removal
-This comparison shows how we eliminated noise by capping distances at 50km and prices at $150.
-![Outliers Before](src/taxipred/data/eda_outliers.png)
-![Cleaned Data](src/taxipred/data/eda_cleaned_price_distance.png)
-
-
-#### Feature Relationships
-The heatmap below validates our feature selection and highlights the strong correlation between distance and price.
-![Correlation Heatmap](src/taxipred/data/correlation_heatmap_encoded.png)
-````
+- How to structure a full ML project with a clean separation between model development, backend API, and frontend UI.
+- How to prevent data leakage (feature selection + consistent feature schema).
+- How to serve a trained ML model with FastAPI and consume it from Streamlit.
+- The importance of validating user input and transforming it into the exact feature format the model expects.
