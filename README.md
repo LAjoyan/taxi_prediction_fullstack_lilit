@@ -158,21 +158,12 @@ The heatmap below validates our feature selection and highlights the strong corr
 ---
 
 
-## 🤖 Model Development
-
-Multiple regression models are evaluated during the model development phase, including
-linear and tree-based approaches. Model selection is based on cross-validation
-performance, error metrics (MAE, RMSE), and interpretability.
-
-The final selected model is trained using a log-transformed version of `Trip_Price`
-to improve numerical stability and reduce skewness.
-
----
-
 ## 🤖 Model Development & Evaluation
 
-Model development followed a structured machine learning workflow to ensure
-robust and interpretable results.
+Model development followed a structured workflow: **baseline → linear model → tree-based model**.
+Models were compared using **MAE, RMSE, and R²** on a held-out test set (and/or cross-validation).
+The final model was trained on a **log-transformed target (`log1p(Trip_Price)`)** to reduce skewness
+and improve numerical stability.
 
 ### Baseline Model
 
@@ -246,7 +237,7 @@ without retraining the model.
 - pandas + numpy (data processing)
 
 
-## ▶ Run the full app (recommended)
+## ▶ Run the full app (backend + frontend)
 
 1) Start backend (FastAPI)
 2) Start frontend (Streamlit)
