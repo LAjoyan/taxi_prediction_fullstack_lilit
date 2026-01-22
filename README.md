@@ -115,7 +115,8 @@ After imputation, the following columns were removed:
 
 - Applied Interquartile Range (IQR) filtering
 - Removed unrealistic high-distance and high-price trips
-- Final training dataset size: **916 rows**
+- Final training dataset size after cleaning and outlier removal: **916 rows**
+
 
 ---
 
@@ -186,9 +187,13 @@ engineered features capture meaningful pricing patterns.
 
 ### Feature Scaling
 
-Feature scaling was evaluated but not applied in the final pipeline.
-The selected models (Linear Regression as a reference model and Random Forest
-as a non-linear model) do not require feature scaling to perform correctly.
+Feature scaling was applied using `StandardScaler` for the Linear Regression model.
+Linear Regression is sensitive to feature magnitude, and scaling ensures that all
+numerical features contribute proportionally to the model.
+
+For Random Forest, feature scaling was not applied, as tree-based models are
+invariant to feature scale.
+
 
 ### Random Forest Regressor
 
@@ -254,7 +259,6 @@ http://127.0.0.1:8000/docs
 ### API Endpoints
 - `GET /api/taxi/v1/health` – backend status
 - `GET /api/taxi/v1/data/sample` – sample rows from training data
-- `POST /api/taxi/v1/route` – route calculation (distance, duration, map geometry)
 - `POST /api/taxi/v1/predict` – price prediction
 
 
