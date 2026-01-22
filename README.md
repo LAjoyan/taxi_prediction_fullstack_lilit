@@ -391,4 +391,6 @@ The application features a multi-page Streamlit interface to provide two distinc
 - The importance of validating user input and transforming it into the exact feature format the model expects.
 - How to integrate external services (routing APIs) into an ML system while keeping
   frontend and backend fully decoupled.
-
+- Geographic Constraint & Input Validation: How to implement geographical boundaries (e.g., Sweden-only geocoding) and distance caps (100km) to protect the model from making "out-of-distribution" predictions on unrealistic data.
+- State Management in Multi-Page Apps: Using Streamlit Session State to ensure that complex results—like Folium maps and calculated prices—persist and remain visible to the user after the initial calculation.
+- Asynchronous Frontend/Backend Communication: How to build a responsive UI that displays real-time backend health status and provides immediate feedback during long-running API calls (like route calculation).
