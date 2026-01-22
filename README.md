@@ -23,7 +23,7 @@ taxi_prediction_fullstack_lilit/
 │       ├── frontend/
 │       │   ├── app.py
 │       │   └── pages/
-│       │       └── 1_Map_Route.py
+│       │       └── map_route.py
 │       ├── model_development/
 │       │   ├── eda.ipynb
 │       │   └── model_dev.ipynb
@@ -278,9 +278,6 @@ Open the app in your browser:
 
 - Streamlit UI: http://localhost:8501
 
-**Note:** The Streamlit app calls the FastAPI endpoint:
-`POST /api/taxi/v1/predict`
-
 ---
 
 ## 🧱 Architecture (High-level)
@@ -359,7 +356,7 @@ The application features a multi-page Streamlit interface to provide two distinc
 
 * **Factors**: Includes environmental variables like Time of Day, Traffic Conditions, and Weather.
 
-2. Address-to-Address Prediction (1_Map_Route.py)
+2. Address-to-Address Prediction (map_route.py)
 * **Purpose**: Real-world trip planning with automated distance calculation.
 
 * **Inputs**: Users enter a Start Address (A) and an End Address (B).
