@@ -6,6 +6,7 @@ taxi_prediction_fullstack_lilit/
 │       ├── backend/
 │       │   ├── api.py
 │       │   ├── data_processing.py
+│       │   ├── ors_routes.py
 │       │   └── random_forest_model.joblib
 │       ├── data/
 │       │   ├── screenshots/
@@ -30,8 +31,6 @@ taxi_prediction_fullstack_lilit/
 ├── pyproject.toml
 ├── README.md
 └── uv.lock
-
-
 ```
 
 # 🚕 Taxi Trip Prediction System
@@ -65,27 +64,25 @@ outlier handling, model training, and deployment through a decoupled backend and
 
 - Removed `Passenger_Count` due to negligible impact on price
 - Identified missing values across numerical and categorical features
-- Dropped rows where multiple critical values were missing
+- Dropped a small number of rows with insufficient numerical information where reliable imputation was not possible
 - Filled missing categorical values with `"Unknown"` to preserve data
 
 ---
 
-### 2. Mathematical Imputation
+### 2. Numerical Imputation (Leakage-Free)
 
-Missing numerical values were recovered using the pricing equation:
+Missing values in key numerical features were handled using **median imputation**
+computed exclusively from the training dataset (`df_known`).
 
+The following features were imputed:
 
-### Option 3 (if you want bullets): don’t bold the bullets
-Paste this:
+- `Trip_Distance_km`
+- `Trip_Duration_Minutes`
 
-```md
-Trip_Price = Base_Fare  
-- (Trip_Distance_km × Per_Km_Rate)  
-- (Trip_Duration_Minutes × Per_Minute_Rate)
-```
-
-
-This approach minimized data loss while maintaining numerical accuracy.
+Using the median ensures robustness to outliers and prevents data leakage by
+avoiding any reconstruction of values from the target variable or pricing formula.
+The same median values derived from the training set were applied to the prediction set
+to ensure consistency.
 
 ---
 
@@ -257,6 +254,7 @@ http://127.0.0.1:8000/docs
 ### API Endpoints
 - `GET /api/taxi/v1/health` – backend status
 - `GET /api/taxi/v1/data/sample` – sample rows from training data
+- `POST /api/taxi/v1/route` – route calculation (distance, duration, map geometry)
 - `POST /api/taxi/v1/predict` – price prediction
 
 
@@ -320,3 +318,6 @@ Flow:
 - How to prevent data leakage (feature selection + consistent feature schema).
 - How to serve a trained ML model with FastAPI and consume it from Streamlit.
 - The importance of validating user input and transforming it into the exact feature format the model expects.
+- How to integrate external services (routing APIs) into an ML system while keeping
+  frontend and backend fully decoupled.
+
