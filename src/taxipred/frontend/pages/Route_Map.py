@@ -39,8 +39,10 @@ if st.button('Calculate Route & Predict Fare'):
                 if route_data['distance_km'] > 100:
                     st.error('🚨 Distance too far! This model is only for city trips under 100km.')
                     st.warning(f'Calculated distance: {route_data['distance_km']:.2f} km is unrealistic for a taxi.')
-                    if 'map_route' in st.session_state: del st.session_state['map_route']
-                    if 'map_prediction' in st.session_state: del st.session_state['map_prediction']
+                    if 'map_route' in st.session_state: 
+                        del st.session_state['map_route']
+                    if 'map_prediction' in st.session_state: 
+                        del st.session_state['map_prediction']
                 else:
                     st.session_state['map_route'] = route_data
 
