@@ -23,7 +23,7 @@ taxi_prediction_fullstack_lilit/
 │       ├── frontend/
 │       │   ├── app.py
 │       │   └── pages/
-│       │       └── map_route.py
+│       │       └── Route_Map.py
 │       ├── model_development/
 │       │   ├── eda.ipynb
 │       │   └── model_dev.ipynb
