@@ -1,14 +1,12 @@
-import os
 import sys
 from pathlib import Path
 
-project_root = Path(__file__).resolve().parent.parent
+# Add the root directory to sys.path
+root = Path(__file__).resolve().parent.parent
+if str(root) not in sys.path:
+    sys.path.insert(0, str(root))
 
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
+from src.taxipred.backend.api import app
 
-try:
-    from src.taxipred.backend.api import app
-except ImportError as e:
-    print(f"Import Error: {e}")
-    raise e
+# Vercel needs the 'app' object to be available at the module level
+# This is what Vercel actually "runs"
