@@ -13,12 +13,12 @@ import requests
 app = FastAPI(title="Taxi Price Prediction API", version="1.0")
 router = APIRouter(prefix="/api/taxi/v1", tags=["taxi"])
 
-BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "random_forest_model.joblib"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+MODEL_PATH = BASE_DIR / Path(__file__).resolve().parent / "random_forest_model.joblib"
 TRAIN_PATH = DATA_PATH / "df_train.csv"
 
 if not MODEL_PATH.exists():
-    raise FileNotFoundError(f"Model not found at: {MODEL_PATH}")
+    print(f"CRITICAL: Model missing at {MODEL_PATH}")
 
 if not TRAIN_PATH.exists():
     raise FileNotFoundError(f"Training data not found at: {TRAIN_PATH}")
