@@ -6,26 +6,26 @@ readme = "README.md"
 authors = [
     { name = "LAjoyan", email = "ajoyan.lilit@gmail.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.12" # Note: Changed to 3.12 for better server compatibility
 dependencies = [
-    "fastapi>=0.128.0",
-    "folium>=0.20.0",
-    "ipykernel>=7.1.0",
-    "pandas>=2.3.3",
-    "requests>=2.32.5",
-    "scikit-learn>=1.8.0",
-    "seaborn>=0.13.2",
-    "streamlit>=1.53.0",
-    "streamlit-folium>=0.26.1",
-    "uvicorn>=0.40.0",
+    "fastapi>=0.115.0",
+    "pandas>=2.0.0",
+    "requests>=2.31.0",
+    "scikit-learn>=1.3.0",
+    "uvicorn>=0.23.0",
+    "joblib>=1.3.0",
+    "python-dotenv>=1.0.0",
 ]
 
-[project.scripts]
-taxipred = "taxipred:main"
-
-[build-system]
-requires = ["uv_build>=0.9.12,<0.10.0"]
-build-backend = "uv_build"
+# Move the heavy stuff here - Vercel will ignore these!
+[dependency-groups]
+dev = [
+    "seaborn>=0.13.2",
+    "streamlit>=1.30.0",
+    "streamlit-folium>=0.17.0",
+    "folium>=0.15.0",
+    "ipykernel>=6.0.0",
+]
 
 [tool.fastapi]
 entrypoint = "src/taxipred/backend/api.py"
