@@ -4,9 +4,9 @@ import joblib
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from taxipred.utils.constants import DATA_PATH, USD_TO_SEK
-from taxipred.backend.data_processing import build_features
-from taxipred.backend.ors_routes import geocode_address, get_route
+from src.taxipred.utils.constants import DATA_PATH, USD_TO_SEK
+from src.taxipred.backend.data_processing import build_features
+from src.taxipred.backend.ors_routes import geocode_address, get_route
 import requests
 
 
