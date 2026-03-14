@@ -1,4 +1,4 @@
 uv.lock
-pyproject.toml
+.venv/
 src/taxipred/model_development/
 src/taxipred/data/
