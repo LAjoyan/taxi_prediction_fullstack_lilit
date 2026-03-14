@@ -1,7 +1,11 @@
-import sys
 import os
+import sys
 
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, root_path)
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from src.taxipred.backend.api import app
+try:
+    from src.taxipred.backend.api import app
+except ImportError as e:
+    print(f"Import Error: {e}")
+    raise e
