@@ -59,6 +59,8 @@ with col_left:
             unsafe_allow_html=True,
         )
 
+        st.image("src/taxipred/frontend/taxi_image.png", use_container_width=False)
+
     else:
         st.info(
             'Adjust parameters in the sidebar and click "Predict Fare" to see the result.'
