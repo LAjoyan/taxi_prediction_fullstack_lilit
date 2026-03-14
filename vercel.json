@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "src/taxipred/backend/api.py"
+    }
+  ]
+}
