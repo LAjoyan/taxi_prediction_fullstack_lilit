@@ -3,7 +3,8 @@
   "builds": [
     {
       "src": "src/taxipred/backend/api.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": { "includeFiles": ["src/taxipred/backend/random_forest_model.joblib"] }
     }
   ],
   "routes": [
