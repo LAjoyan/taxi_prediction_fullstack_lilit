@@ -3,7 +3,7 @@ import requests
 import folium
 from streamlit_folium import st_folium
 
-API_URL = "https://taxi-prediction-fullstack-lilit.vercel.app/api/taxi/v1"
+API_URL = "http://127.0.0.1:8000/api/taxi/v1"
 
 st.set_page_config(page_title='Address Predictor', page_icon='📍')
 # CSS to remove extra whitespace and fix the title position

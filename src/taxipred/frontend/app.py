@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from pathlib import Path
 
-API_URL = "https://taxi-prediction-fullstack-lilit.vercel.app/api/taxi/v1"
+API_URL = "http://127.0.0.1:8000/api/taxi/v1"
 current_dir = Path(__file__).parent
 image_path = current_dir / "taxi_image.png"
 
@@ -70,7 +70,7 @@ with col_left:
         )
 
         st.write("")
-        st.image("src\taxipred/frontend/taxi_image.png", use_container_width=False)
+        st.image("src/taxipred/frontend/taxi_image.png", use_container_width=False)
 
         st.markdown(
             """
