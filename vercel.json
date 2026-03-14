@@ -1,16 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "src/taxipred/backend/api.py",
-      "use": "@vercel/python",
-      "config": { "includeFiles": ["src/taxipred/backend/random_forest_model.joblib"] }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "src/taxipred/backend/api.py"
+      "source": "/api/(.*)",
+      "destination": "src/taxipred/backend/api.py"
     }
   ]
 }
