@@ -70,7 +70,7 @@ with col_left:
         )
 
         st.write("")
-        st.image("src/taxipred/frontend/taxi_image.png", use_container_width=False)
+        st.image("src\taxipred/frontend/taxi_image.png", use_container_width=False)
 
         st.markdown(
             """
