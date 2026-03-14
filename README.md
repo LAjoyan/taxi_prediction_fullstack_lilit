@@ -8,7 +8,7 @@ taxi_prediction_fullstack_lilit/
 │       │   ├── api.py
 │       │   ├── data_processing.py
 │       │   ├── ors_routes.py
-│       │   └── model_rf.joblib
+│       │   └── random_forest_model.joblib
 │       ├── data/
 │       │   ├── screenshots/
 │       │   │   ├── correlation_heatmap_encoded.png
@@ -22,6 +22,7 @@ taxi_prediction_fullstack_lilit/
 │       │   └── taxi_trip_pricing.csv
 │       ├── frontend/
 │       │   ├── app.py
+│       │   ├── taxi_image.png
 │       │   └── pages/
 │       │       └── Route_Map.py
 │       ├── model_development/
@@ -306,6 +307,12 @@ Flow:
 
 ---
 
+### UI Enhancements:
+
+* **Custom CSS Injection**: Used Streamlit's unsafe_allow_html to inject CSS for custom padding, removing the default top-margin gap, and ensuring a "single-view" experience.
+
+* **Responsive Columns**: Implemented a 3-column header for inputs to reduce vertical space consumption by 60%.
+
 ## 🗺 Bonus: Route-Based Price Prediction
 
 As an additional feature, the application supports route-based taxi price prediction
@@ -367,6 +374,8 @@ The application features a multi-page Streamlit interface to provide two distinc
 
 * **Safety Mechanism**: Includes a **Geographic Boundary (Sweden-only)** and a **Distance Cap (100km)** to prevent unrealistic predictions outside the model's training range.
 
+* **Sidebar Integration**: Moved trip conditions and developer credits to the sidebar to maximize the main stage area for visualization.
+
 * **UI Screenshot**:
 ![Map Route Prediction Result](src/taxipred/data/screenshots/Streamlit_A_B_point.png)
 
@@ -393,4 +402,5 @@ The application features a multi-page Streamlit interface to provide two distinc
   frontend and backend fully decoupled.
 - Geographic Constraint & Input Validation: How to implement geographical boundaries (e.g., Sweden-only geocoding) and distance caps (100km) to protect the model from making "out-of-distribution" predictions on unrealistic data.
 - State Management in Multi-Page Apps: Using Streamlit Session State to ensure that complex results—like Folium maps and calculated prices—persist and remain visible to the user after the initial calculation.
+- Frontend Performance & UX: Learned how to bypass Streamlit's default layout constraints using custom CSS and HTML to create a professional, "dashboard-style" user experience.
 - Asynchronous Frontend/Backend Communication: How to build a responsive UI that displays real-time backend health status and provides immediate feedback during long-running API calls (like route calculation).
