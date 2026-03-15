@@ -14,7 +14,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 from src.taxipred.backend.data_processing import build_features
-from src.taxipred.utils.constants import USD_TO_SEK, get_route_data
+from src.taxipred.utils.constants import USD_TO_SEK, ORS_API_KEY, get_route_data
 
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
 
