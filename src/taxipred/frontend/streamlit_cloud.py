@@ -1,26 +1,25 @@
-import streamlit as st
-import numpy as np
-import joblib
+import sys
 import os
 from pathlib import Path
 
-# --- 1. IMPORT YOUR ML LOGIC DIRECTLY ---
-# These imports work because your 'src' folder is in the Python path
+import streamlit as st
+import numpy as np
+import joblib
+
 from src.taxipred.utils.constants import USD_TO_SEK
 from src.taxipred.backend.data_processing import build_features
 
-# --- 2. SETUP PATHS ---
-# We calculate paths relative to THIS file to avoid errors on the server
 CURRENT_DIR = Path(__file__).resolve().parent
-BASE_DIR = CURRENT_DIR.parent.parent.parent # Goes up to the root of the repo
+BASE_DIR = CURRENT_DIR.parent.parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
-# Path to the model: src/taxipred/backend/random_forest_model.joblib
+
+
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
-
-# Path to the image: In the same folder as this script
 IMAGE_PATH = str(CURRENT_DIR / "taxi_image.png")
 
-# --- 3. LOAD MODEL ONCE ---
+
 @st.cache_resource
 def load_model():
     if not MODEL_PATH.exists():
@@ -30,7 +29,7 @@ def load_model():
 
 model = load_model()
 
-# --- 4. UI CONFIGURATION ---
+
 st.set_page_config(page_title="Manual Taxi Predictor", page_icon="🚖")
 st.title("🚖 Taxi Price Prediction")
 
@@ -51,7 +50,7 @@ with st.sidebar:
         st.session_state.clear()
         st.rerun()
 
-# --- 5. PREDICTION LOGIC ---
+
 if submitted:
     payload = {
         "Trip_Distance_km": float(dist),
@@ -64,10 +63,7 @@ if submitted:
 
     if model is not None:
         try:
-            # Build features using your existing backend function
             X_in = build_features(payload)
-            
-            # Predict
             pred_log = float(model.predict(X_in)[0])
             pred_price_usd = float(np.expm1(pred_log))
             pred_price_sek = pred_price_usd * USD_TO_SEK
@@ -80,7 +76,7 @@ if submitted:
     else:
         st.error("Model is not loaded. Check logs.")
 
-# --- 6. DISPLAY RESULTS ---
+
 col_left, col_right = st.columns([3, 1])
 
 with col_left:
@@ -93,14 +89,13 @@ with col_left:
             <h1 style='color:#60a5fa;'>{res["estimated_price"]:.2f} SEK</h1>
         </div>
         """,
-            unsafe_allow_True=True,
+            unsafe_allow_html=True,
         )
     else:
         st.info('Adjust parameters in the sidebar and click "Predict Fare" to see the result.')
 
     st.write("")
     
-    # Use the fixed image path
     if os.path.exists(IMAGE_PATH):
         st.image(IMAGE_PATH, use_container_width=False)
     
