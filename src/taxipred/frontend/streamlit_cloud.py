@@ -20,7 +20,7 @@ from src.taxipred.backend.data_processing import build_features
 
 
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
-IMAGE_PATH =  "taxi_image.png"
+IMAGE_PATH = BASE_DIR / "src" / "taxipred" / "frontend" / "taxi_image.png"
 
 
 @st.cache_resource
