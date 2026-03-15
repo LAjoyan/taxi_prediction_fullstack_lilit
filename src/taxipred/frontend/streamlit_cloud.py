@@ -2,6 +2,14 @@ import sys
 import os
 from pathlib import Path
 
+
+CURRENT_DIR = Path(__file__).resolve().parent
+BASE_DIR = CURRENT_DIR.parent.parent.parent 
+
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+
 import streamlit as st
 import numpy as np
 import joblib
@@ -9,12 +17,6 @@ import joblib
 
 from src.taxipred.utils.constants import USD_TO_SEK
 from src.taxipred.backend.data_processing import build_features
-
-CURRENT_DIR = Path(__file__).resolve().parent
-BASE_DIR = CURRENT_DIR.parent.parent.parent 
-
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
 
 
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
