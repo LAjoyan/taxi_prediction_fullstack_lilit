@@ -1,10 +1,34 @@
-import streamlit as st
-import requests
 from pathlib import Path
+import sys
+import os
 
-API_URL = "http://127.0.0.1:8000/api/taxi/v1"
-current_dir = Path(__file__).parent
-image_path = current_dir / "taxi_image.png"
+current_dir = Path(__file__).resolve().parent
+BASE_DIR = current_dir.parent.parent.parent.parent
+
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+import streamlit as st
+import numpy as np
+import joblib
+
+from src.taxipred.backend.data_processing import build_features
+from src.taxipred.utils.constants import USD_TO_SEK
+
+
+MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
+IMAGE_PATH = current_dir.parent / "taxi_image.png"
+
+
+@st.cache_resource
+def load_model():
+    if not MODEL_PATH.exists():
+        st.error(f"Model not found at {MODEL_PATH}")
+        return None
+    return joblib.load(MODEL_PATH)
+
+
+model = load_model()
 
 st.set_page_config(page_title="Manual Taxi Predictor", page_icon="🚖")
 st.title("🚖 Taxi Price Prediction")
@@ -37,14 +61,20 @@ if submitted:
         "Weather": weather,
     }
 
-    try:
-        response = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
-        if response.status_code == 200:
-            st.session_state["last_prediction"] = response.json()
-        else:
-            st.error(f"Prediction failed: {response.text}")
-    except Exception as e:
-        st.error(f"Connection error: {e}")
+    if model is not None:
+        try:
+            X_in = build_features(payload)
+            pred_log = float(model.predict(X_in)[0])
+            pred_price_usd = float(np.expm1(pred_log))
+            pred_price_sek = pred_price_usd * USD_TO_SEK
+
+            st.session_state["last_prediction"] = {
+                "estimated_price": round(pred_price_sek, 2)
+            }
+        except Exception as e:
+            st.error(f"Prediction error: {e}")
+    else:
+        st.error("Model is not loaded.")
 
 
 col_left, col_right = st.columns([3, 1])
@@ -62,16 +92,16 @@ with col_left:
             unsafe_allow_html=True,
         )
 
-        st.image("src/taxipred/frontend/taxi_image.png", use_container_width=False)
-
     else:
         st.info(
             'Adjust parameters in the sidebar and click "Predict Fare" to see the result.'
         )
 
         st.write("")
-        st.image("src/taxipred/frontend/taxi_image.png", use_container_width=False)
-
+    if IMAGE_PATH.exists():
+        st.image(str(IMAGE_PATH), use_container_width=True)
+    else:
+        st.warning("Taxi image not found.")
         st.markdown(
             """
     <p style='text-align: center;  font-size:28px;'>
@@ -91,13 +121,10 @@ with col_left:
 
 with col_right:
     st.subheader("System Status")
-    try:
-        health = requests.get(f"{API_URL}/health", timeout=3)
-        if health.status_code == 200:
-            st.success("✅ Backend is running")
-        else:
-            st.warning(f"⚠️ Status: {health.status_code}")
-    except Exception:
-        st.error("❌ Backend not reachable")
+
+    if model is not None:
+        st.success("✅ Model Loaded")
+    else:
+        st.error("❌ Model Offline")
 
     st.divider()
