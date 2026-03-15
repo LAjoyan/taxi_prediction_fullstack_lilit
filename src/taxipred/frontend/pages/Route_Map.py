@@ -1,27 +1,42 @@
+import sys
+import os
+from pathlib import Path
 import streamlit as st
-import requests
+import numpy as np
 import folium
 from streamlit_folium import st_folium
+import joblib
 
-API_URL = "http://127.0.0.1:8000/api/taxi/v1"
+CURRENT_DIR = Path(__file__).resolve().parent
+BASE_DIR = CURRENT_DIR.parent.parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+from src.taxipred.backend.data_processing import build_features
+from src.taxipred.utils.constants import USD_TO_SEK
+from src.taxipred.utils.routing import get_route_data
+
+MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
+
+
+@st.cache_resource
+def load_model():
+    if not MODEL_PATH.exists():
+        st.error(f"Model not found at {MODEL_PATH}")
+        return None
+    return joblib.load(MODEL_PATH)
+
+model = load_model()
+
 
 st.set_page_config(page_title='Address Predictor', page_icon='📍')
 # CSS to remove extra whitespace and fix the title position
 st.markdown("""
     <style>
-        .block-container {
-            padding-top: 2rem !important;
-            padding-bottom: 0rem !important;
-        }
-        h1 {
-            /* Changed from negative to positive to push it down */
-            margin-top: 2rem !important; 
-            margin-bottom: 1.5rem !important;
-            text-align: left; /* Adjust to 'center' if you prefer */
-        }
+        .block-container { padding-top: 2rem !important; }
+        h1 { margin-top: 2rem !important; margin-bottom: 1.5rem !important; }
     </style>
 """, unsafe_allow_html=True)
-
 
 st.title('📍 Address-to-Address Prediction')
 
@@ -53,20 +68,18 @@ with st.sidebar:
             unsafe_allow_html=True,
         )
 
+
 col_addr1, col_addr2, col_btn = st.columns([2, 2, 1.2])
 
 with col_addr1:
-    # label_visibility="collapsed" hides the "From" text above the box to save space
     from_address = st.text_input("From Address", placeholder="Enter starting point...", label_visibility="collapsed")
 
 with col_addr2:
     to_address = st.text_input("To Address", placeholder="Enter destination...", label_visibility="collapsed")
 
 with col_btn:
-    # This puts the button on the same line as the inputs
     predict_clicked = st.button('Predict Fare', use_container_width=True)
 
-# Now, use 'predict_clicked' instead of 'if st.button(...)'
 if predict_clicked:
     if not from_address or not to_address:
         st.warning('Please enter both addresses.')
@@ -74,22 +87,14 @@ if predict_clicked:
     else:
         try:
             with st.spinner('Calculating ...'):
-                r = requests.post(
-                    f'{API_URL}/route',
-                    json={'from_address': from_address, 'to_address': to_address},
-                )
-                r.raise_for_status()
-                route_data = r.json()
+                
+                route_data = get_route_data(from_address, to_address)
                 
                 if route_data['distance_km'] > 100:
                     st.error('🚨 Distance too far! This model is only for city trips under 100km.')
-                    st.warning(f'Calculated distance: {route_data['distance_km']:.2f} km is unrealistic for a taxi.')
-                    if 'map_route' in st.session_state: 
-                        del st.session_state['map_route']
-                    if 'map_prediction' in st.session_state: 
-                        del st.session_state['map_prediction']
                 else:
                     st.session_state['map_route'] = route_data
+                
 
                     payload = {
                         'Trip_Distance_km': float(route_data['distance_km']),
@@ -100,10 +105,16 @@ if predict_clicked:
                         'Weather': weather,
                     }
 
-                    p = requests.post(f'{API_URL}/predict', json=payload)
-                    p.raise_for_status()
-                    st.session_state['map_prediction'] = p.json()
 
+                    if model is not None:
+                        X_in = build_features(payload)
+                        pred_log = float(model.predict(X_in)[0])
+                        pred_price_usd = float(np.expm1(pred_log))
+                        pred_price_sek = pred_price_usd * USD_TO_SEK
+                        
+                        st.session_state['map_prediction'] = {
+                            'estimated_price': round(pred_price_sek, 2)
+                        }
         except Exception as e:
             st.error(f'Error: {e}')
 
@@ -131,5 +142,4 @@ if 'map_route' in st.session_state and 'map_prediction' in st.session_state:
             ''',
         unsafe_allow_html=True,
     )
-
 
