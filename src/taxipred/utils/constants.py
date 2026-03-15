@@ -7,26 +7,23 @@ ORS_API_KEY = os.getenv("ORS_API_KEY")
 USD_TO_SEK = 10.5
 
 def get_route_data(from_addr, to_addr):
-    """
-    Geocodes two addresses and finds the route between them using ORS.
-    """
+
     if not ORS_API_KEY:
         raise ValueError("ORS_API_KEY not found in environment variables.")
 
-    headers = {'Authorization': ORS_API_KEY}
 
-    # 1. Geocode the 'From' and 'To' addresses to get Coordinates
     def geocode(addr):
         url = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_API_KEY}&text={addr}"
         resp = requests.get(url).json()
         if not resp.get('features'):
             raise ValueError(f"Could not find address: {addr}")
-        return resp['features'][0]['geometry']['coordinates'] # returns [lon, lat]
+        return resp['features'][0]['geometry']['coordinates'] 
+    
 
     coords_from = geocode(from_addr)
     coords_to = geocode(to_addr)
 
-    # 2. Get the actual Route
+
     route_url = f"https://api.openrouteservice.org/v2/directions/driving-car?api_key={ORS_API_KEY}&start={coords_from[0]},{coords_from[1]}&end={coords_to[0]},{coords_to[1]}"
     route_resp = requests.get(route_url).json()
 
@@ -36,7 +33,6 @@ def get_route_data(from_addr, to_addr):
     properties = route_resp['features'][0]['properties']['summary']
     geometry = route_resp['features'][0]['geometry']['coordinates']
 
-    # 3. Return a clean dictionary for Streamlit
     return {
         "distance_km": properties['distance'] / 1000,
         "duration_min": properties['duration'] / 60,
