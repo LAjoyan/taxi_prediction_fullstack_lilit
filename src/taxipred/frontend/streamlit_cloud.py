@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 CURRENT_DIR = Path(__file__).resolve().parent
-BASE_DIR = CURRENT_DIR.parent.parent.parent 
+BASE_DIR = CURRENT_DIR.parent.parent.parent
 
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
@@ -20,7 +20,7 @@ from src.taxipred.backend.data_processing import build_features
 
 
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
-IMAGE_PATH = BASE_DIR / "src" / "taxipred" / "frontend" / "taxi_image.png"
+IMAGE_PATH = CURRENT_DIR / "taxi_image.png"
 
 
 @st.cache_resource
@@ -29,6 +29,7 @@ def load_model():
         st.error(f"Model not found at {MODEL_PATH}")
         return None
     return joblib.load(MODEL_PATH)
+
 
 model = load_model()
 
@@ -70,7 +71,7 @@ if submitted:
             pred_log = float(model.predict(X_in)[0])
             pred_price_usd = float(np.expm1(pred_log))
             pred_price_sek = pred_price_usd * USD_TO_SEK
-            
+
             st.session_state["last_prediction"] = {
                 "estimated_price": round(pred_price_sek, 2)
             }
@@ -95,13 +96,16 @@ with col_left:
             unsafe_allow_html=True,
         )
     else:
-        st.info('Adjust parameters in the sidebar and click "Predict Fare" to see the result.')
+        st.info(
+            'Adjust parameters in the sidebar and click "Predict Fare" to see the result.'
+        )
 
     st.write("")
-    
-    if os.path.exists(IMAGE_PATH):
-        st.image(IMAGE_PATH, use_container_width=False)
-    
+
+    if IMAGE_PATH.exists():
+        st.image(str(IMAGE_PATH), use_container_width=True)
+    else:
+        st.warning("Taxi image file not found on server.")
     st.markdown(
         """
     <p style='text-align: center; font-size:28px;'>
@@ -124,6 +128,6 @@ with col_right:
         st.success("✅ Model Loaded")
     else:
         st.error("❌ Model Offline")
-    
+
     st.divider()
     st.caption("Running on Streamlit Cloud (Direct Mode)")
