@@ -31,12 +31,21 @@ model = load_model()
 
 
 st.set_page_config(page_title="Address Predictor", page_icon="📍")
-# CSS to remove extra whitespace and fix the title position
+
 st.markdown(
     """
     <style>
-        .block-container { padding-top: 2rem !important; }
-        h1 { margin-top: 2rem !important; margin-bottom: 1.5rem !important; }
+        .block-container { 
+            padding-top: 1rem !important; 
+            padding-bottom: 0rem !important; 
+        }
+        h1 { 
+            margin-top: 0rem !important; 
+            margin-bottom: 0.5rem !important; 
+            font-size: 2rem !important;
+        }
+        .stAlert { margin-bottom: 1rem !important; }
+        iframe { height: 350px !important; }
     </style>
 """,
     unsafe_allow_html=True,
@@ -142,6 +151,14 @@ if "map_route" in st.session_state and "map_prediction" in st.session_state:
     res = st.session_state["map_prediction"]
     st.success(f"Route Found: {route['distance_km']:.2f} km")
 
+    st.markdown(
+        f"""
+    <div style='background-color:#1e293b; padding:5px; border-radius:10px; text-align:center; border:1px solid #3b82f6;'>
+         <h1 style='color:#60a5fa; margin:0;'>{res["estimated_price"]:.2f} SEK</h1>
+     </div>
+            """,
+        unsafe_allow_html=True,
+    )
     m = folium.Map(
         location=[
             (route["start_lat"] + route["end_lat"]) / 2,
@@ -151,12 +168,3 @@ if "map_route" in st.session_state and "map_prediction" in st.session_state:
     )
     folium.PolyLine(route["polyline_latlon"], weight=5).add_to(m)
     st_folium(m, width=700, height=400)
-
-    st.markdown(
-        f"""
-    <div style='background-color:#1e293b; padding:5px; border-radius:10px; text-align:center; border:1px solid #3b82f6;'>
-         <h1 style='color:#60a5fa; margin:0;'>{res["estimated_price"]:.2f} SEK</h1>
-     </div>
-            """,
-        unsafe_allow_html=True,
-    )
