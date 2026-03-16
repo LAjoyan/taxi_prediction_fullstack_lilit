@@ -35,22 +35,25 @@ st.set_page_config(page_title="Address Predictor", page_icon="📍")
 st.markdown(
     """
     <style>
+        /* Changed from 1rem to 2rem to stop the pin from being cut off */
         .block-container { 
-            padding-top: 1rem !important; 
+            padding-top: 2rem !important; 
             padding-bottom: 0rem !important; 
         }
+        
         h1 { 
             margin-top: 0rem !important; 
             margin-bottom: 0.5rem !important; 
             font-size: 2rem !important;
         }
+
         .stAlert { margin-bottom: 1rem !important; }
+        
         iframe { height: 350px !important; }
     </style>
 """,
     unsafe_allow_html=True,
 )
-
 st.title("📍 Address-to-Address Prediction")
 
 st.markdown(
