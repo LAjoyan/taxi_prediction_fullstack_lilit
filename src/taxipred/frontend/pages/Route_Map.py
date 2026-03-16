@@ -13,8 +13,22 @@ BASE_DIR = CURRENT_DIR.parent.parent.parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
+st.set_page_config(page_title="Address Predictor", page_icon="📍")
+
 from src.taxipred.backend.data_processing import build_features
 from src.taxipred.utils.constants import USD_TO_SEK, ORS_API_KEY, get_route_data
+
+st.markdown(
+    """
+    <style>
+        .block-container { padding-top: 2rem !important; padding-bottom: 0rem !important; }
+        h1 { margin-top: 0rem !important; margin-bottom: 0.5rem !important; font-size: 2rem !important; }
+        .stAlert { margin-bottom: 1rem !important; }
+        iframe { height: 350px !important; }
+    </style>
+""",
+    unsafe_allow_html=True,
+)
 
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
 
@@ -30,43 +44,7 @@ def load_model():
 model = load_model()
 
 
-st.set_page_config(page_title="Address Predictor", page_icon="📍")
-
-st.markdown(
-    """
-    <style>
-        /* Changed from 1rem to 2rem to stop the pin from being cut off */
-        .block-container { 
-            padding-top: 2rem !important; 
-            padding-bottom: 0rem !important; 
-        }
-        
-        h1 { 
-            margin-top: 0rem !important; 
-            margin-bottom: 0.5rem !important; 
-            font-size: 2rem !important;
-        }
-
-        .stAlert { margin-bottom: 1rem !important; }
-        
-        iframe { height: 350px !important; }
-    </style>
-""",
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    """
-    <div style='background-color: rgba(255, 165, 0, 0.1); padding: 15px; border-left: 5px solid #ffa500; border-radius: 5px; margin-bottom: 20px;'>
-        <strong>📏 Service Boundary:</strong> This estimator is designed for city trips. 
-        Please ensure your route is within <b>100 km</b>.
-    </div>
-""",
-    unsafe_allow_html=True,
-)
-
 with st.sidebar:
-
     st.header("Conditions")
     time_of_day = st.selectbox(
         "Time of Day", ["Morning", "Afternoon", "Evening", "Night"]
@@ -75,7 +53,7 @@ with st.sidebar:
     traffic = st.selectbox("Traffic", ["Low", "Medium", "High"])
     weather = st.selectbox("Weather", ["Clear", "Rain", "Snow"])
 
-    st.write("") # Small spacer
+    st.write("")  # Small spacer
     if st.button("Reset App", use_container_width=True):
         st.session_state.clear()
         st.rerun()
@@ -89,17 +67,20 @@ with st.sidebar:
             <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa;'>GitHub</a>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
+
 
 st.title("📍 Address-to-Address Prediction")
 
 st.caption("💡 Tip: Change sidebar conditions to see how the price fluctuates!")
 
+
 st.markdown(
-      """
-    <div style='background-color: rgba(255, 165, 0, 0.1); padding: 12px; border-left: 5px solid #ffa500; border-radius: 5px; margin-bottom: 15px; font-size: 14px;'>
-        <strong>📏 Service Boundary:</strong> Max route distance is <b>100 km</b>.
+    """
+    <div style='background-color: rgba(255, 165, 0, 0.1); padding: 15px; border-left: 5px solid #ffa500; border-radius: 5px; margin-bottom: 20px;'>
+        <strong>📏 Service Boundary:</strong> This estimator is designed for city trips. 
+        Please ensure your route is within <b>100 km</b>.
     </div>
 """,
     unsafe_allow_html=True,
