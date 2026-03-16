@@ -54,7 +54,6 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-st.title("📍 Address-to-Address Prediction")
 
 st.markdown(
     """
@@ -68,10 +67,6 @@ st.markdown(
 
 with st.sidebar:
 
-    st.markdown("### 💡 **Pro Tip**")
-    st.write("Change the **Traffic** or **Weather** below to see how the price fluctuates! 📉")
-    st.divider()
-
     st.header("Conditions")
     time_of_day = st.selectbox(
         "Time of Day", ["Morning", "Afternoon", "Evening", "Night"]
@@ -80,25 +75,35 @@ with st.sidebar:
     traffic = st.selectbox("Traffic", ["Low", "Medium", "High"])
     weather = st.selectbox("Weather", ["Clear", "Rain", "Snow"])
 
-    st.markdown("<br>" * 5, unsafe_allow_html=True)
+    st.write("") # Small spacer
+    if st.button("Reset App", use_container_width=True):
+        st.session_state.clear()
+        st.rerun()
 
+    st.markdown("---")
     st.markdown(
-        """<br>
-            <br>
-    <p style='text-align: center;  font-size:20px;'>
-    Developed by MLOps student <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa; text-decoration: underline;'>
-        Lilit Ajoyan 
-        </a>
-        <br>
-        Find the repo on 
-    <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa; text-decoration: underline;'>
-            GitHub
-        </a>
-            
-
-    """,
-        unsafe_allow_html=True,
+        """
+        <div style='text-align: center; font-size:14px; color: #94a3b8;'>
+            Developed by <b>Lilit Ajoyan</b><br>
+            <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa;'>LinkedIn</a> | 
+            <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa;'>GitHub</a>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
+
+st.title("📍 Address-to-Address Prediction")
+
+st.caption("💡 Tip: Change sidebar conditions to see how the price fluctuates!")
+
+st.markdown(
+      """
+    <div style='background-color: rgba(255, 165, 0, 0.1); padding: 12px; border-left: 5px solid #ffa500; border-radius: 5px; margin-bottom: 15px; font-size: 14px;'>
+        <strong>📏 Service Boundary:</strong> Max route distance is <b>100 km</b>.
+    </div>
+""",
+    unsafe_allow_html=True,
+)
 
 
 col_addr1, col_addr2, col_btn = st.columns([2, 2, 1.2])
