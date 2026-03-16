@@ -54,21 +54,21 @@ with st.sidebar:
     weather = st.selectbox("Weather", ["Clear", "Rain", "Snow"])
 
     st.write("")  # Small spacer
-    if st.button("Reset App", use_container_width=True):
+    if st.button("Reset Route", use_container_width=True):
         st.session_state.clear()
         st.rerun()
 
     st.markdown("---")
     st.markdown(
-        """
-        <div style='text-align: center; font-size:14px; color: #94a3b8;'>
-            Developed by <b>Lilit Ajoyan</b><br>
-            <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa;'>LinkedIn</a> | 
-            <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa;'>GitHub</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+       """
+    <div style='text-align: center; font-size:14px; color: #94a3b8;'>
+        Developed by <span style='font-weight: 800; color: #ffffff;'>Lilit Ajoyan</span><br>
+        <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa;'>LinkedIn</a> | 
+        <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa;'>GitHub</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 st.title("📍 Address-to-Address Prediction")
