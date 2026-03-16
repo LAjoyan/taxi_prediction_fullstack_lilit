@@ -81,9 +81,8 @@ if submitted:
         st.error("Model is not loaded. Check logs.")
 
 
-col_left, col_right = st.columns([3, 1])
 
-with col_left:
+
     if "last_prediction" in st.session_state:
         st.subheader("Predicted price")
         res = st.session_state["last_prediction"]
@@ -122,9 +121,3 @@ with col_left:
         unsafe_allow_html=True,
     )
 
-with col_right:
-    st.subheader("System Status")
-    if model is not None:
-        st.success("✅ Model Loaded")
-    else:
-        st.error("❌ Model Offline")
