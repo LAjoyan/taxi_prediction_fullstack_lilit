@@ -44,6 +44,16 @@ st.markdown(
 
 st.title("📍 Address-to-Address Prediction")
 
+st.markdown(
+    """
+    <div style='background-color: rgba(255, 165, 0, 0.1); padding: 15px; border-left: 5px solid #ffa500; border-radius: 5px; margin-bottom: 20px;'>
+        <strong>📏 Service Boundary:</strong> This estimator is designed for city trips. 
+        Please ensure your route is within <b>100 km</b>.
+    </div>
+""",
+    unsafe_allow_html=True,
+)
+
 with st.sidebar:
     st.header("Conditions")
     time_of_day = st.selectbox(
