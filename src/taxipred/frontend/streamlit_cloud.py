@@ -130,4 +130,3 @@ with col_right:
         st.error("❌ Model Offline")
 
     st.divider()
-    st.caption("Running on Streamlit Cloud (Direct Mode)")
