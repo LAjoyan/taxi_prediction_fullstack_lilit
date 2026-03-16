@@ -83,41 +83,41 @@ if submitted:
 
 
 
-    if "last_prediction" in st.session_state:
-        st.subheader("Predicted price")
-        res = st.session_state["last_prediction"]
-        st.markdown(
-            f"""
-        <div style='background-color:#1e293b; padding:20px; border-radius:10px; border:2px solid #3b82f6;'>
-            <h1 style='color:#60a5fa;'>{res["estimated_price"]:.2f} SEK</h1>
-        </div>
-        """,
-            unsafe_allow_html=True,
-        )
-    else:
-        st.info(
-            'Adjust parameters in the sidebar and click "Predict Fare" to see the result.'
-        )
-
-    st.write("")
-
-    if IMAGE_PATH.exists():
-        st.image(str(IMAGE_PATH), use_container_width=True)
-    else:
-        st.warning("Taxi image file not found on server.")
+if "last_prediction" in st.session_state:
+    st.subheader("Predicted price")
+    res = st.session_state["last_prediction"]
     st.markdown(
-        """
-    <p style='text-align: center; font-size:28px;'>
-    Developed by MLOps student <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa; text-decoration: underline;'>
-      Lilit Ajoyan 
-      </a>
-      <br>
-     Find the repo on 
-    <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa; text-decoration: underline;'>
-            GitHub
-        </a>
-    </p>
+        f"""
+    <div style='background-color:#1e293b; padding:20px; border-radius:10px; border:2px solid #3b82f6;'>
+        <h1 style='color:#60a5fa;'>{res["estimated_price"]:.2f} SEK</h1>
+    </div>
     """,
         unsafe_allow_html=True,
     )
+else:
+    st.info(
+        'Adjust parameters in the sidebar and click "Predict Fare" to see the result.'
+    )
+
+st.write("")
+
+if IMAGE_PATH.exists():
+    st.image(str(IMAGE_PATH), use_container_width=True)
+else:
+    st.warning("Taxi image file not found on server.")
+st.markdown(
+    """
+<p style='text-align: center; font-size:28px;'>
+Developed by MLOps student <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa; text-decoration: underline;'>
+    Lilit Ajoyan 
+    </a>
+    <br>
+    Find the repo on 
+<a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa; text-decoration: underline;'>
+        GitHub
+    </a>
+</p>
+""",
+    unsafe_allow_html=True,
+)
 
