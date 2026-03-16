@@ -67,6 +67,11 @@ st.markdown(
 )
 
 with st.sidebar:
+
+    st.markdown("### 💡 **Pro Tip**")
+    st.write("Change the **Traffic** or **Weather** below to see how the price fluctuates! 📉")
+    st.divider()
+
     st.header("Conditions")
     time_of_day = st.selectbox(
         "Time of Day", ["Morning", "Afternoon", "Evening", "Night"]
@@ -74,6 +79,8 @@ with st.sidebar:
     day_of_week = st.selectbox("Day of Week", ["Weekday", "Weekend"])
     traffic = st.selectbox("Traffic", ["Low", "Medium", "High"])
     weather = st.selectbox("Weather", ["Clear", "Rain", "Snow"])
+
+    st.markdown("<br>" * 5, unsafe_allow_html=True)
 
     st.markdown(
         """<br>
