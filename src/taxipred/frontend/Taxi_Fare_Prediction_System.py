@@ -84,8 +84,8 @@ if submitted:
 col_left, col_right = st.columns([3, 1])
 
 with col_left:
-    st.subheader("Predicted price")
     if "last_prediction" in st.session_state:
+        st.subheader("Predicted price")
         res = st.session_state["last_prediction"]
         st.markdown(
             f"""
