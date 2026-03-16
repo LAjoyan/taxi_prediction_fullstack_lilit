@@ -128,5 +128,3 @@ with col_right:
         st.success("✅ Model Loaded")
     else:
         st.error("❌ Model Offline")
-
-    st.divider()
