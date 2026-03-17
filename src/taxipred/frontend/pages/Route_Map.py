@@ -109,11 +109,15 @@ with col_addr1:
         "From Address",
         placeholder="Enter starting point...",
         label_visibility="collapsed",
+        key="input_from"
     )
 
 with col_addr2:
     to_address = st.text_input(
-        "To Address", placeholder="Enter destination...", label_visibility="collapsed"
+        "To Address", 
+        placeholder="Enter destination...", 
+        label_visibility="collapsed",
+        key="input_to"
     )
 
 with col_btn:
