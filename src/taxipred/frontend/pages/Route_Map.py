@@ -1,11 +1,12 @@
 import sys
-import os
 from pathlib import Path
 import streamlit as st
 import numpy as np
 import folium
 from streamlit_folium import st_folium
 import joblib
+from src.taxipred.backend.data_processing import build_features
+from src.taxipred.utils.constants import USD_TO_SEK, get_route_data
 
 CURRENT_DIR = Path(__file__).resolve().parent
 BASE_DIR = CURRENT_DIR.parent.parent.parent.parent
@@ -15,8 +16,6 @@ if str(BASE_DIR) not in sys.path:
 
 st.set_page_config(page_title="Address Predictor", page_icon="📍")
 
-from src.taxipred.backend.data_processing import build_features
-from src.taxipred.utils.constants import USD_TO_SEK, ORS_API_KEY, get_route_data
 
 st.markdown(
     """
@@ -107,6 +106,7 @@ col_addr1, col_addr2, col_btn = st.columns([2, 2, 1.2])
 with col_addr1:
     from_address = st.text_input(
         "From Address",
+        value=st.session_state.get("input_from", ""),
         placeholder="Enter starting point...",
         label_visibility="collapsed",
         key="input_from"
@@ -115,19 +115,16 @@ with col_addr1:
 with col_addr2:
     to_address = st.text_input(
         "To Address", 
+        value=st.session_state.get("input_to", ""),
         placeholder="Enter destination...", 
         label_visibility="collapsed",
         key="input_to"
     )
 
 with col_btn:
-    predict_clicked = st.button("Predict Fare", use_container_width=True)
-
-if predict_clicked:
-    if not from_address or not to_address:
-        st.warning("Please enter both addresses.")
-
-    else:
+    if st.button("Predict Fare", use_container_width=True):
+        if not from_address or not to_address:
+            st.warning("Please enter both addresses.")
         try:
             with st.spinner("Calculating ..."):
                 route_data = get_route_data(from_address, to_address)
@@ -139,7 +136,8 @@ if predict_clicked:
                 else:
                     st.session_state["map_route"] = route_data
 
-                    payload = {
+                    if model is not None:
+                        payload = {
                         "Trip_Distance_km": float(route_data["distance_km"]),
                         "Trip_Duration_Minutes": float(route_data["duration_min"]),
                         "Time_of_Day": time_of_day,
@@ -148,7 +146,7 @@ if predict_clicked:
                         "Weather": weather,
                     }
 
-                    if model is not None:
+                    
                         X_in = build_features(payload)
                         pred_log = float(model.predict(X_in)[0])
                         pred_price_usd = float(np.expm1(pred_log))
@@ -157,6 +155,7 @@ if predict_clicked:
                         st.session_state["map_prediction"] = {
                             "estimated_price": round(pred_price_sek, 2)
                         }
+                    st.rerun()
         except Exception as e:
             st.error(f"Error: {e}")
 
