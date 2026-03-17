@@ -1,23 +1,30 @@
 import sys
-import os
 from pathlib import Path
+import streamlit as st
+import numpy as np
+import joblib
+from src.taxipred.utils.constants import USD_TO_SEK
+from src.taxipred.backend.data_processing import build_features
 
+st.set_page_config(page_title="Manual Taxi Predictor", page_icon="🚖")
+
+st.markdown(
+    """
+    <style>
+        .block-container {
+            padding-top: 0.5rem;
+            padding-bottom: 0rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 CURRENT_DIR = Path(__file__).resolve().parent
 BASE_DIR = CURRENT_DIR.parent.parent.parent
 
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
-
-
-import streamlit as st
-import numpy as np
-import joblib
-
-
-from src.taxipred.utils.constants import USD_TO_SEK
-from src.taxipred.backend.data_processing import build_features
-
 
 MODEL_PATH = BASE_DIR / "src" / "taxipred" / "backend" / "random_forest_model.joblib"
 IMAGE_PATH = CURRENT_DIR / "taxi_image.png"
@@ -34,9 +41,7 @@ def load_model():
 model = load_model()
 
 
-st.set_page_config(page_title="Manual Taxi Predictor", page_icon="🚖")
 st.title("🚖 Taxi Price Prediction")
-
 with st.sidebar:
     st.header("Trip Parameters")
     with st.form("predict_form"):
@@ -81,8 +86,6 @@ if submitted:
         st.error("Model is not loaded. Check logs.")
 
 
-
-
 if "last_prediction" in st.session_state:
     st.subheader("Predicted price")
     res = st.session_state["last_prediction"]
@@ -120,4 +123,3 @@ Developed by MLOps student <a href='https://www.linkedin.com/in/lilit-ajoyan-156
 """,
     unsafe_allow_html=True,
 )
-
