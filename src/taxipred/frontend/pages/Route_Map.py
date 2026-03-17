@@ -69,7 +69,10 @@ with st.sidebar:
 
     st.write("")  # Small spacer
     if st.button("Reset Route", use_container_width=True):
-        st.session_state.clear()
+        st.session_state["input_from"] = ""
+        st.session_state["input_to"] = ""
+        st.session_state.pop("map_route", None)
+        st.session_state.pop("map_prediction", None)
         st.rerun()
 
     st.markdown("---")
@@ -106,7 +109,6 @@ col_addr1, col_addr2, col_btn = st.columns([2, 2, 1.2])
 with col_addr1:
     from_address = st.text_input(
         "From Address",
-        value=st.session_state.get("input_from", ""),
         placeholder="Enter starting point...",
         label_visibility="collapsed",
         key="input_from"
@@ -115,7 +117,6 @@ with col_addr1:
 with col_addr2:
     to_address = st.text_input(
         "To Address", 
-        value=st.session_state.get("input_to", ""),
         placeholder="Enter destination...", 
         label_visibility="collapsed",
         key="input_to"
