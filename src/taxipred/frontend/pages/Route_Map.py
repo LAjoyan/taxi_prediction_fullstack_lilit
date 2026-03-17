@@ -21,10 +21,21 @@ from src.taxipred.utils.constants import USD_TO_SEK, ORS_API_KEY, get_route_data
 st.markdown(
     """
     <style>
+        /* General layout spacing */
         .block-container { padding-top: 2rem !important; padding-bottom: 0rem !important; }
         h1 { margin-top: 0rem !important; margin-bottom: 0.5rem !important; font-size: 2rem !important; }
         .stAlert { margin-bottom: 1rem !important; }
-        iframe { height: 350px !important; }
+        
+        /* Force the map's iframe to a specific height */
+        iframe { height: 400px !important; }
+
+        /* The "Magic" selector to round the map edges */
+        [data-testid="stVerticalBlockBorderWrapper"]:has(iframe) {
+            border-radius: 10px !important;
+            overflow: hidden !important;
+            border: 2px solid #3b82f6 !important;
+            margin-top: 10px;
+        }
     </style>
 """,
     unsafe_allow_html=True,
@@ -155,12 +166,17 @@ if "map_route" in st.session_state and "map_prediction" in st.session_state:
     """,
         unsafe_allow_html=True,
     )
+    st.write("")
+    st.write("")
     m = folium.Map(
         location=[
             (route["start_lat"] + route["end_lat"]) / 2,
             (route["start_lon"] + route["end_lon"]) / 2,
         ],
         zoom_start=12,
+        zoom_control=False
     )
-    folium.PolyLine(route["polyline_latlon"], weight=5).add_to(m)
-    st_folium(m, width=700, height=400)
+    folium.PolyLine(route["polyline_latlon"], weight=5, color="#3b82f6").add_to(m)
+
+    with st.container():
+        st_folium(m, use_container_width=True, height=400)
