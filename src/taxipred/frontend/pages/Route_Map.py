@@ -61,8 +61,8 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(
        """
-    <div style='text-align: center; font-size:14px; color: #94a3b8;'>
-        Developed by <span style='font-weight: 800; color: #ffffff;'>Lilit Ajoyan</span><br>
+    <div style='text-align: center; font-size:14px; color: var(--text-color); opacity: 0.7;'>
+        Developed by <span style='font-weight: 800; color: var(--text-color);'>Lilit Ajoyan</span><br>
         <a href='https://www.linkedin.com/in/lilit-ajoyan-1565b4183/' target='_blank' style='color: #60a5fa;'>LinkedIn</a> | 
         <a href='https://github.com/LAjoyan/taxi_prediction_fullstack_lilit' target='_blank' style='color: #60a5fa;'>GitHub</a>
     </div>
@@ -149,10 +149,10 @@ if "map_route" in st.session_state and "map_prediction" in st.session_state:
 
     st.markdown(
         f"""
-    <div style='background-color:#1e293b; padding:5px; border-radius:10px; text-align:center; border:1px solid #3b82f6;'>
+   <div style='background-color: var(--background-color); padding:5px; border-radius:10px; text-align:center; border:2px solid #3b82f6;'>
          <h1 style='color:#60a5fa; margin:0;'>{res["estimated_price"]:.2f} SEK</h1>
      </div>
-            """,
+    """,
         unsafe_allow_html=True,
     )
     m = folium.Map(
