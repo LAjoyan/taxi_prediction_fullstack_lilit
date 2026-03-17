@@ -34,7 +34,11 @@ st.markdown(
             border-radius: 10px !important;
             overflow: hidden !important;
             border: 2px solid #3b82f6 !important;
-            margin-top: 10px;
+            margin-top: 15px;
+        }
+        /* Ensures the internal iframe also respects the rounding */
+        iframe {
+            border-radius: 10px !important;
         }
     </style>
 """,
