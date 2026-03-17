@@ -11,9 +11,22 @@ st.set_page_config(page_title="Manual Taxi Predictor", page_icon="🚖")
 st.markdown(
     """
     <style>
+        /* Adjust the main container padding */
         .block-container {
-            padding-top: 0.5rem;
-            padding-bottom: 0rem;
+            padding-top: 2rem;
+            padding-bottom: 1rem;
+            max-width: 800px; /* Optional: centers the content and keeps it from stretching too wide */
+        }
+        
+        /* Center the title and subtitles */
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Optional: Style the info box to be more subtle */
+        .stAlert {
+            text-align: center;
         }
     </style>
     """,
