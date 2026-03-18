@@ -1,6 +1,6 @@
 # 🚕 Taxi Trip Prediction System
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_svg.svg)](https://taxipredictionfullstacklilit-l2xpcmcykhjy7wpaxisixr.streamlit.app/)
+[Taxi Price Prediction](https://taxipredictionfullstacklilit-l2xpcmcykhjy7wpaxisixr.streamlit.app/)
 [![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 
 > **A full-stack ML application predicting taxi fares using Random Forest, FastAPI, and Streamlit.**
