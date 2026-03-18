@@ -170,19 +170,35 @@ with col_btn:
 if "map_route" in st.session_state and "map_prediction" in st.session_state:
     route = st.session_state["map_route"]
     res = st.session_state["map_prediction"]
+
+    price = res["estimated_price"]
+    xe_url = f"https://www.xe.com/currencyconverter/convert/?Amount={price:.2f}&From=SEK"
+    
     st.success(f"Route Found: {route['distance_km']:.2f} km")
 
     st.markdown(
         f"""
-   <div style='background-color: var(--background-color); padding:5px; border-radius:10px; text-align:center; border:2px solid #3b82f6;'>
-         <h1 style='color:#60a5fa; margin:0;'>{res["estimated_price"]:.2f} SEK</h1>
-     </div>
-    """,
+        <a href="{xe_url}" target="_blank" style="text-decoration: none; color: inherit;">
+            <div style='background-color: var(--background-color); 
+                        padding: 15px; 
+                        border-radius: 10px; 
+                        text-align: center; 
+                        border: 2px solid #3b82f6; 
+                        transition: all 0.3s ease; 
+                        cursor: pointer;'
+                 onmouseover="this.style.border='2px solid #60a5fa'; this.style.backgroundColor='rgba(59, 130, 246, 0.05)';" 
+                 onmouseout="this.style.border='2px solid #3b82f6'; this.style.backgroundColor='transparent';">
+                <h1 style='color:#60a5fa; margin:0;'>{price:.2f} SEK</h1>
+                <p style='margin:0; font-size: 0.8rem; color: #60a5fa; opacity: 0.8;'>
+                    💱 Prices in SEK. Click to convert to your local currency.
+                </p>
+            </div>
+        </a>
+        """,
+       
         unsafe_allow_html=True,
     )
-    st.caption("Prices are shown in SEK. Use the link below to convert to your local currency:")
-    st.markdown("[💱 Convert SEK to any currency](https://www.xe.com/currencyconverter/)", unsafe_allow_html=True)
- 
+    
     m = folium.Map(
         location=[
             (route["start_lat"] + route["end_lat"]) / 2,
