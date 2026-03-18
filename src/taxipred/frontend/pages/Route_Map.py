@@ -180,6 +180,8 @@ if "map_route" in st.session_state and "map_prediction" in st.session_state:
     """,
         unsafe_allow_html=True,
     )
+    st.caption("Prices are shown in SEK. Use the link below to convert to your local currency:")
+    st.markdown("[💱 Convert SEK to any currency](https://www.xe.com/currencyconverter/)", unsafe_allow_html=True)
     st.write("")
     st.write("")
     m = folium.Map(
