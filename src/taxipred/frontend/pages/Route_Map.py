@@ -1,10 +1,11 @@
+import os
 import sys
+
+sys.path.append(os.getcwd())
 from pathlib import Path
 import streamlit as st
 import numpy as np
 import folium
-import os
-import sys
 from streamlit_folium import st_folium
 import joblib
 from src.taxipred.backend.data_processing import build_features
