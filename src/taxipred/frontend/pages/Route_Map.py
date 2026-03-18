@@ -11,6 +11,9 @@ import joblib
 from src.taxipred.backend.data_processing import build_features
 from src.taxipred.utils.constants import USD_TO_SEK, get_route_data
 
+if "ORS_API_KEY" in st.secrets:
+    os.environ["ORS_API_KEY"] = st.secrets["ORS_API_KEY"]
+
 CURRENT_DIR = Path(__file__).resolve().parent
 BASE_DIR = CURRENT_DIR.parent.parent.parent.parent
 
