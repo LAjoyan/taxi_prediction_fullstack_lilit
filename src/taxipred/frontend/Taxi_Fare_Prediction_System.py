@@ -92,17 +92,30 @@ if submitted:
 if "last_prediction" in st.session_state:
     st.subheader("Predicted price")
     res = st.session_state["last_prediction"]
+
+    price = res["estimated_price"]
+
+    xe_url = f"https://www.xe.com/currencyconverter/convert/?Amount={price:.2f}&From=SEK&To=USD"
     st.markdown(
         f"""
-    <div style='background-color:#1e293b; padding:20px; border-radius:10px; border:2px solid #3b82f6;'>
-        <h1 style='color:#60a5fa;'>{res["estimated_price"]:.2f} SEK</h1>
-    </div>
-    """,
+        <a href="{xe_url}" target="_blank" style="text-decoration: none; color: inherit;">
+            <div style='background-color: #1e293b; 
+                        padding: 25px; 
+                        border-radius: 12px; 
+                        text-align: center; 
+                        border: 2px solid #3b82f6; 
+                        transition: all 0.3s ease;
+                        cursor: pointer;'
+                 onmouseover="this.style.border='2px solid #60a5fa'; this.style.backgroundColor='#24334d';" 
+                 onmouseout="this.style.border='2px solid #3b82f6'; this.style.backgroundColor='#1e293b';">
+                <h1 style='color:#60a5fa; margin:0; font-size: 3rem;'>{price:.2f} SEK</h1>
+                <p style='margin:10px 0 0 0; font-size: 0.9rem; color: #60a5fa; opacity: 0.8;'>
+                    💱 Prices in SEK. Click to convert to your local currency.
+                </p>
+            </div>
+        </a>
+        """,
         unsafe_allow_html=True,
-    )
-else:
-    st.info(
-        'Adjust parameters in the sidebar and click "Predict Fare" to see the result.'
     )
 
 st.write("")
