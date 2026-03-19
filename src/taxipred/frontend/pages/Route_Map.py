@@ -172,8 +172,7 @@ if "map_route" in st.session_state and "map_prediction" in st.session_state:
     res = st.session_state["map_prediction"]
 
     price = res["estimated_price"]
-    xe_url = f"https://www.xe.com/currencyconverter/convert/?Amount={price:.2f}&From=SEK"
-    
+    xe_url = f"https://www.xe.com/currencyconverter/convert/?Amount={price:.2f}&From=SEK&To=USD"    
     st.success(f"Route Found: {route['distance_km']:.2f} km")
 
     st.markdown(
