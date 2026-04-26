@@ -8,7 +8,7 @@
 ```text
 taxi_prediction_fullstack_lilit/
 ├── .venv/
-├── .stremlit/
+├── .streamlit/
 ├── src/
 │   └── taxipred/
 │       ├── __init__.py
@@ -57,7 +57,7 @@ distance, duration, traffic conditions, time of day, day of week, and weather.
 ## 📌 Project Overview
 
 This project focuses on building a robust price prediction system using real-world–style
-taxi trip data.  
+taxi trip data.
 The pipeline includes data cleaning, mathematical imputation, feature engineering,
 outlier handling, model training, and deployment through a decoupled backend and frontend.
 
@@ -267,8 +267,8 @@ From the project root:
 ```bash
 uv run uvicorn taxipred.backend.api:app --reload
 ```
-Open Swagger UI: 
-http://127.0.0.1:8000/docs 
+Open Swagger UI:
+http://127.0.0.1:8000/docs
 
 ### API Endpoints
 - `GET /api/taxi/v1/`  – API base entry point
